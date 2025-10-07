@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet" />
+  </head>
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>To-Do List</title>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+
+  <div class="bg-white p-6 rounded-2xl shadow-md w-96 text-center">
+    <h1 class="text-xl font-bold mb-4">My To-Do List</h1>
+
+    <!-- Input + Add button -->
+    <div class="flex mb-4">
+      <input 
+        type="text" 
+        id="taskInput" 
+        placeholder="Enter a task" 
+        class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+      <button 
+        id="addBtn" 
+        class="bg-blue-500 text-white px-4 rounded-r-lg hover:bg-blue-600 transition">
+        Add
+      </button>
+    </div>
+
+    <!-- Task list -->
+    <ul id="taskList" class="text-left space-y-2">
+      <!-- Tasks will appear here -->
+    </ul>
+  </div>
+
+  <script>
+
+    const taskInput = document.getElementById('taskInput');
+const addBtn = document.getElementById('addBtn');
+const taskList = document.getElementById('taskList');
+
+    
+    addBtn.addEventListener('click', function() {
+    const task = taskInput.value.trim(); // get input and remove spaces
+
+    if (task === '') return; // do nothing if input is empty
+
+    // Create a new list item
+    const li = document.createElement('li');
+    li.className = "flex justify-between items-center bg-gray-100 px-3 py-2 rounded";
+
+    li.innerHTML = `
+        <span>${task}</span>
+        <button class="text-red-500 hover:text-red-700">Delete</button>
+    `;
+
+    // Add delete functionality
+    const deleteBtn = li.querySelector('button');
+    deleteBtn.addEventListener('click', function() {
+        li.remove(); // remove this task from the list
+    });
+
+    // Add the task to the list
+    taskList.appendChild(li);
+
+    // Clear the input
+    taskInput.value = '';
+});
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="max-w-md w-full bg-white p-6 rounded-2xl shadow-lg">
+<!-- Header -->
+<h1 class="text-2xl font-extrabold text-gray-900 mb-2">GetYovo — Greeting App</h1>
+<p class="text-sm text-gray-600 mb-4">Type your name and get a friendly greeting tailored for GetYovo.</p>
+
+
+<!-- Input + label -->
+<label for="nameInput" class="block text-sm font-medium text-gray-700 mb-2">Your name</label>
+<input id="nameInput" type="text" placeholder="Type your name..."
+class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4" />
+
+
+<!-- Buttons -->
+<div class="flex gap-3">
+<button id="greetBtn" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Greet me</button>
+<button id="clearBtn" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition">Clear</button>
+</div>
+
+
+<!-- Greeting card (hidden initially) -->
+<!-- We set transform & opacity helper classes so we can animate when showing -->
+<div id="greetingCard" class="mt-6 p-4 rounded-lg bg-gradient-to-r from-white to-blue-50 hidden transform transition duration-300 ease-out scale-95 opacity-0">
+<p id="greetingOutput" class="text-lg font-semibold"></p>
+<p id="greetingSub" class="text-sm text-gray-600 mt-1">Welcome to GetYovo — we deliver smiles 😊</p>
+</div>
+</div>
+<script>
+    const nameInput = document.getElementById('nameInput');
+    const greetBtn = document.getElementById('greetBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const greetingCard = document.getElementById('greetingCard');
+    const greetingOutput = document.getElementById('greetingOutput');
+    const greetingSub = document.getElementById('greetingSub');
+
+
+
+    function sanitize(str) {
+if (!str) return '';
+return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
+}
+
+function createGreeting(name) {
+if (!name) return 'Hello! Please tell me your name.';
+return `Hello, ${name}! Thanks for supporting GetYovo.`;
+}
+
+
+greetBtn.addEventListener('click', function () {
+  const raw = nameInput.value;
+  const name = sanitize(raw);
+});
+
+greetBtn.addEventListener('click', function () {
+const raw = nameInput.value;
+const name = sanitize(raw);
+
+
+// build the message and show it
+const message = createGreeting(name);
+greetingOutput.textContent = message; // use textContent to avoid inserting HTML
+
+
+// animate in: remove hidden & low-opacity classes, add visible classes
+greetingCard.classList.remove('hidden', 'scale-95', 'opacity-0');
+greetingCard.classList.add('scale-100', 'opacity-100');
+
+
+// Persist user's name so next time the page loads we remember them
+localStorage.setItem('getyovo_name', name);
+});
+
+
+// allow pressing Enter inside the input to trigger the button
+nameInput.addEventListener('keydown', function (e) {
+if (e.key === 'Enter') greetBtn.click();
+});
+
+clearBtn.addEventListener('click', function () {
+nameInput.value = '';
+greetingCard.classList.add('hidden');
+// remove saved name
+localStorage.removeItem('getyovo_name');
+});
+document.addEventListener('DOMContentLoaded', function () {
+const saved = localStorage.getItem('getyovo_name');
+if (saved) {
+nameInput.value = saved;
+greetingOutput.textContent = createGreeting(saved);
+greetingCard.classList.remove('hidden', 'scale-95', 'opacity-0');
+greetingCard.classList.add('scale-100', 'opacity-100');
+}
+});
+</script>
+
+  </body>
+</html>
